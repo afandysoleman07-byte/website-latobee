@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SI-KOBAR DALOHA | Security System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4 font-sans">
+   
+    <div class="w-full max-w-md space-y-4">
+
+        <header class="w-full bg-slate-800 p-4 rounded-2xl border border-slate-700 flex justify-between items-center shadow-lg">
+            <h1 class="font-bold text-red-500 uppercase tracking-tighter">Monitoring</h1>
+            <button onclick="bukaProfil()" class="text-emerald-400 hover:text-emerald-300 transition flex items-center space-x-2">
+                <span class="text-xs font-bold">PROFIL PETUGAS</span>
+                <i class="fas fa-user-circle text-2xl"></i>
+            </button>
+        </header>
+       
+       
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-red-700 to-slate-900 p-6 text-center border-b border-slate-700">
+            <i class="fas fa-shield-alt text-4xl mb-2 text-red-500"></i>
+            <h1 class="text-2xl font-black uppercase tracking-tighter">SI-KOBAR</h1>
+            <p class="text-slate-400 text-xs tracking-widest">SELAMAT BERTUGAS (DALOHA)</p>
+        </div>
+
+        <!-- Info Real-time -->
+        <div class="p-6 space-y-5">
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-slate-900/50 p-3 rounded-2xl border border-slate-700 text-center">
+                    <p class="text-[10px] text-slate-500 uppercase font-bold">Waktu Digital</p>
+                    <p id="txt-jam" class="font-mono text-xl text-blue-400 font-bold">--:--:--</p>
+                </div>
+                <div class="bg-slate-900/50 p-3 rounded-2xl border border-slate-700 text-center">
+                    <p class="text-[10px] text-slate-500 uppercase font-bold">Tanggal</p>
+                    <p id="txt-tgl" class="font-bold text-sm text-slate-200">--/--/--</p>
+                </div>
+            </div>
+
+            <!-- Lokasi Otomatis -->
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-red-900/30">
+                <div class="flex items-center justify-between mb-1">
+                    <p class="text-[10px] text-slate-500 uppercase font-bold">Titik Koordinat (GPS)</p>
+                    <span class="flex h-2 w-2 rounded-full bg-red-500 animate-ping"></span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-map-marker-alt text-red-500"></i>
+                    <p id="txt-lokasi" class="text-xs font-mono text-slate-300 italic font-bold text-blue-400">Mencari sinyal satelit...</p>
+                </div>
+            </div>
+
+            <!-- Form Input -->
+            <div class="space-y-4">
+                <!-- Regu Pengamanan -->
+                <div>
+                    <label class="text-[10px] text-slate-400 ml-1 font-bold uppercase">Regu Pengamanan</label>
+                    <div class="relative mt-1">
+                        <select id="rupam" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 pl-10 appearance-none focus:ring-2 focus:ring-red-600 outline-none">
+                            <option value="RUPAM I">RUPAM I</option>
+                            <option value="RUPAM II">RUPAM II</option>
+                            <option value="RUPAM III">RUPAM III</option>
+                            <option value="RUPAM IV">RUPAM IV</option>
+                        </select>
+                        <i class="fas fa-users absolute left-3 top-4 text-slate-500"></i>
+                    </div>
+                </div>
+
+                <!-- Nama Petugas -->
+                <div>
+                    <label class="text-[10px] text-slate-400 ml-1 font-bold uppercase">Nama Petugas</label>
+                    <div class="relative mt-1">
+                        <input type="text" id="nama" placeholder="Ketik nama lengkap..." 
+                               class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 pl-10 focus:ring-2 focus:ring-red-600 outline-none transition">
+                        <i class="fas fa-user-shield absolute left-3 top-4 text-slate-500"></i>
+                    </div>
+                </div>
+
+                <!-- Brandgang Area -->
+                <div>
+                    <label class="text-[10px] text-slate-400 ml-1 font-bold uppercase">AREA KONTROL</label>
+                    <div class="relative mt-1">
+                        <select id="area" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 pl-10 appearance-none focus:ring-2 focus:ring-red-600 outline-none">
+                            <option value="BRANDGANG SELATAN">BRANDGANG SELATAN</option>
+                            <option value="BRANDGANG UTARA">BRANDGANG UTARA</option>
+                        </select>
+                        <i class="fas fa-road absolute left-3 top-4 text-slate-500"></i>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-700">
+                    <label class="text-[10px] text-slate-400 font-bold block mb-2">AMBIL FOTO BUKTI</label>
+                    <div class="flex items-center space-x-3">
+                        <input type="file" id="fotoInput" accept="image/*" capture="environment" class="hidden" onchange="previewFoto(event)">
+                        <button onclick="document.getElementById('fotoInput').click()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center shadow-lg">
+                            <i class="fas fa-camera mr-2"></i> BUKA KAMERA
+                        </button>
+                        <div id="previewContainer" class="hidden">
+                            <img id="imgPreview" class="w-12 h-12 object-cover rounded border border-blue-500">
+                        </div>
+                        <p id="statusFoto" class="text-[10px] text-slate-500 italic">Belum ada foto</p>
+                    </div>
+                </div>
+            
+                <!-- Kondisi -->
+                <div>
+                    <label class="text-[10px] text-slate-400 ml-1 font-bold uppercase">Situasi Lapangan</label>
+                    <textarea id="catatan" rows="2" placeholder="Contoh: Tembok & kawat berduri dalam keadaan baik." 
+                              class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-red-600"></textarea>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button onclick="kirimWA()" class="w-full bg-green-600 hover:bg-green-500 text-white font-black py-4 rounded-2xl transition duration-300 flex items-center justify-center space-x-3 shadow-xl shadow-green-900/40">
+                <i class="fab fa-whatsapp text-2xl"></i>
+                <span>KIRIM LAPORAN SEKARANG</span>
+            </button>
+        </div>
+
+        <div class="bg-slate-950 p-3 text-center">
+            <p class="text-[9px] text-slate-600 uppercase tracking-[0.2em]">Security Protocol - Latobe Digital System</p>
+        </div>
+    </div>
+
+    <script>
+        function bukaProfil() {
+            const nama = document.getElementById('nama').value;
+            const rupam = document.getElementById('rupam').value;
+            alert(nama ? `Profil Petugas:\nNama: ${nama}\nRegu: ${rupam}` : "Nama belum diisi!");
+        }
+
+        // Update Waktu & Tanggal
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('txt-jam').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
+            document.getElementById('txt-tgl').innerText = now.toLocaleDateString('id-ID', {day:'2-digit', month:'long', year:'numeric'});
+        }, 1000);
+
+        // Geolocation Otomatis
+        let koordinat = "Lokasi belum didapat";
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                koordinat = `${pos.coords.latitude},${pos.coords.longitude}`;
+                document.getElementById('txt-lokasi').innerText = koordinat;
+            }, (err) => {
+                document.getElementById('txt-lokasi').innerText = "Aktifkan GPS Perangkat!";
+            }, {enableHighAccuracy: true});
+        }
+
+        function kirimWA() {
+            const rupam = document.getElementById('rupam').value;
+            const nama = document.getElementById('nama').value;
+            const area = document.getElementById('area').value;
+            const catatan = document.getElementById('catatan').value || "Aman Terkendali";
+            const jam = document.getElementById('txt-jam').innerText;
+            const tgl = document.getElementById('txt-tgl').innerText;
+            const lokasi = document.getElementById('txt-lokasi').innerText;
+            
+            const nomorWA = "6282151309630"; // <--- GANTI DENGAN NOMOR WA TUJUAN
+
+            if(!nama) { 
+                alert("Harap masukkan Nama Petugas sebelum mengirim!"); 
+                return; 
+            }
+
+            const pesan = `*LAPORAN E-TROLLING LAPAS*%0A` +
+                          `------------------------------------%0A` +
+                          `🛡️ *Regu:* ${rupam}%0A` +
+                          `👤 *Petugas:* ${nama}%0A` +
+                          `📍 *Area:* ${area}%0A` +
+                          `📅 *Tanggal:* ${tgl}%0A` +
+                          `⏰ *Waktu:* ${jam}%0A` +
+                          `🌎 *Titik GPS:* %0Ahttps://www.google.com/maps?q=${lokasi}%0A` +
+                          `------------------------------------%0A` +
+                          `📝 *Kondisi:* ${catatan}%0A` +
+                          `------------------------------------%0A` +
+                          `_Dikirim melalui Sistem Digital Lapas_`;
+
+            window.open(`https://wa.me/${nomorWA}?text=${pesan}`, '_blank');
+        }
+    </script>
+</body>
+</html>

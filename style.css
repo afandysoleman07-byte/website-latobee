@@ -1,0 +1,17 @@
+.logo {
+	margin-right: auto;
+}
+
+nav ul {
+	displey: flex;
+	gap: 20 
+}
+
+li {
+	list-style: none;
+}
+
+a {
+	color: #eaeaea;
+	text-decoration: none;
+}
